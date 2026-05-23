@@ -101,6 +101,10 @@ import {
   normalizeVoxCPMBackend,
   type VoxCPMProviderOptions,
 } from './voxcpm';
+import { getApiRateLimiter } from '../utils/rate-limiter';
+
+// Rate limit: 35 requests per minute (configurable via environment variable)
+const API_RATE_LIMIT = parseInt(process.env.API_RATE_LIMIT_RPM || '35', 10);
 
 /**
  * Result of TTS generation
@@ -141,43 +145,49 @@ export async function generateTTS(
     throw new Error(`API key required for TTS provider: ${config.providerId}`);
   }
 
-  switch (config.providerId) {
-    case 'openai-tts':
-      return await generateOpenAITTS(config, text);
-
-    case 'azure-tts':
-      return await generateAzureTTS(config, text);
-
-    case 'glm-tts':
-      return await generateGLMTTS(config, text);
-
-    case 'qwen-tts':
-      return await generateQwenTTS(config, text);
-
-    case 'voxcpm-tts':
-      return await generateVoxCPMTTS(config, text);
-
-    case 'minimax-tts':
-      return await generateMiniMaxTTS(config, text);
-    case 'doubao-tts':
-      return await generateDoubaoTTS(config, text);
-    case 'elevenlabs-tts':
-      return await generateElevenLabsTTS(config, text);
-
-    case 'lemonade-tts':
-      return await generateLemonadeTTS(config, text);
-
-    case 'browser-native-tts':
-      throw new Error(
-        'Browser Native TTS must be handled client-side using Web Speech API. This provider cannot be used on the server.',
-      );
-
-    default:
-      if (isCustomTTSProvider(config.providerId)) {
+  // Get the rate limiter instance (35 RPM default)
+  const rateLimiter = getApiRateLimiter(API_RATE_LIMIT);
+  
+  // Wrap the actual generation call with rate limiting
+  return rateLimiter.execute(async () => {
+    switch (config.providerId) {
+      case 'openai-tts':
         return await generateOpenAITTS(config, text);
-      }
-      throw new Error(`Unsupported TTS provider: ${config.providerId}`);
-  }
+
+      case 'azure-tts':
+        return await generateAzureTTS(config, text);
+
+      case 'glm-tts':
+        return await generateGLMTTS(config, text);
+
+      case 'qwen-tts':
+        return await generateQwenTTS(config, text);
+
+      case 'voxcpm-tts':
+        return await generateVoxCPMTTS(config, text);
+
+      case 'minimax-tts':
+        return await generateMiniMaxTTS(config, text);
+      case 'doubao-tts':
+        return await generateDoubaoTTS(config, text);
+      case 'elevenlabs-tts':
+        return await generateElevenLabsTTS(config, text);
+
+      case 'lemonade-tts':
+        return await generateLemonadeTTS(config, text);
+
+      case 'browser-native-tts':
+        throw new Error(
+          'Browser Native TTS must be handled client-side using Web Speech API. This provider cannot be used on the server.',
+        );
+
+      default:
+        if (isCustomTTSProvider(config.providerId)) {
+          return await generateOpenAITTS(config, text);
+        }
+        throw new Error(`Unsupported TTS provider: ${config.providerId}`);
+    }
+  });
 }
 
 /**
