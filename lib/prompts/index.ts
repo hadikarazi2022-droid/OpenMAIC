@@ -45,4 +45,16 @@ export const PROMPT_IDS = {
   AGENT_SYSTEM_WB_STUDENT: 'agent-system-wb-student',
   DIRECTOR: 'director',
   PBL_DESIGN: 'pbl-design',
+  // Pedagogical Pipeline Prompts
+  PEDAGOGICAL_SOURCE_INGESTION: 'pedagogical-source-ingestion',
+  PEDAGOGICAL_BLOOMS_ANALYSIS: 'pedagogical-blooms-analysis',
+  PEDAGOGICAL_KNOWLEDGE_POINT_EXTRACTION: 'pedagogical-knowledge-point-extraction',
+  PEDAGOGICAL_GAP_ANALYSIS: 'pedagogical-gap-analysis',
+  PEDAGOGICAL_ARCHITECT_AGENT: 'pedagogical-architect-agent',
+  PEDAGOGICAL_SLIDE_GENERATOR: 'pedagogical-slide-generator',
+  PEDAGOGICAL_SCRIPT_NARRATION: 'pedagogical-script-narration',
+  PEDAGOGICAL_SIMULATION_DESIGNER: 'pedagogical-simulation-designer',
+  PEDAGOGICAL_MIND_MAP_GENERATOR: 'pedagogical-mind-map-generator',
+  PEDAGOGICAL_CLASSMATE_PERSONAS: 'pedagogical-classmate-personas',
+  PEDAGOGICAL_ADAPTIVE_TUTOR_RESPONSE: 'pedagogical-adaptive-tutor-response',
 } as const satisfies Record<string, PromptId>;

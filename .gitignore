@@ -1,79 +1,68 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
+dist/
+build/
+target/
 
-CLAUDE.local.md
-.claude
-.superpowers
+# Dependencies
+.venv/
+venv/
+node_modules/
+.julia/
+zig*/
+.mypy_cache/
+.pytest_cache/
+.gradle/
 
-# dependencies
-/node_modules
-/openclaw/node_modules
-/openclaw/package-lock.json
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.swo
 
-# testing
-/coverage
+# Environment
+.env
+.env.local
+*.env.*
 
-# Playwright
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
+# Editors
+.vscode/
+.idea/
 
-# next.js
-/.next/
-/out/
-
-# production
-/build
-/dist
-
-# misc
+# System files
 .DS_Store
-*.pem
+Thumbs.db
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+# Coverage
+coverage/
+htmlcov/
+.coverage
 
-# env files
-.env*
-!.env.example
-
-# server provider config (contains API keys)
-server-providers.yml
-server-providers-*.yml
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# IDE
-.idea
-.vscode
-
-# worktrees
-.worktrees
-
-# generated data
-/data
-/logs
-
-# docs
-/docs
-# Eval results
-eval/whiteboard-layout/results/
-eval/outline-language/results/
-
-# e2e screenshot artifacts
-e2e/screenshots/
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
+```
