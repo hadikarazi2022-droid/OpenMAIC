@@ -30,7 +30,11 @@ export type PromptId =
   | 'pedagogical-source-ingestion'
   | 'pedagogical-blooms-analysis'
   | 'pedagogical-knowledge-point-extraction'
-  | 'pedagogical-gap-analysis';
+  | 'pedagogical-gap-analysis'
+  | 'pedagogical-architect-agent'
+  | 'pedagogical-slide-generator'
+  | 'pedagogical-script-narration'
+  | 'pedagogical-simulation-designer';
 
 /**
  * Snippet identifier
