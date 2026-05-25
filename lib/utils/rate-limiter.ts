@@ -103,8 +103,12 @@ export class RateLimiter {
       this.queue.push(request);
       // Sort by priority (higher first), then by queue time (FIFO)
       this.queue.sort((a, b) => {
-        if (b.priority !== a.priority) {
-          return b.priority - a.priority;
+  // Provide a safe fallback when priority is undefined
+        const pA = a.priority ?? 0;
+        const pB = b.priority ?? 0;
+
+        if (pB !== pA) {
+        return pB - pA;
         }
         return a.queuedAt - b.queuedAt;
       });
