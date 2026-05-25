@@ -25,6 +25,10 @@ import {
   generateWithLemonadeImage,
   testLemonadeImageConnectivity,
 } from './adapters/lemonade-image-adapter';
+import { getApiRateLimiter } from '../utils/rate-limiter';
+
+// Rate limit: 35 requests per minute (configurable via environment variable)
+const API_RATE_LIMIT = parseInt(process.env.API_RATE_LIMIT_RPM || '35', 10);
 
 export const IMAGE_PROVIDERS: Record<ImageProviderId, ImageProviderConfig> = {
   seedream: {
@@ -165,24 +169,30 @@ export async function generateImage(
   config: ImageGenerationConfig,
   options: ImageGenerationOptions,
 ): Promise<ImageGenerationResult> {
-  switch (config.providerId) {
-    case 'seedream':
-      return generateWithSeedream(config, options);
-    case 'openai-image':
-      return generateWithOpenAIImage(config, options);
-    case 'qwen-image':
-      return generateWithQwenImage(config, options);
-    case 'nano-banana':
-      return generateWithNanoBanana(config, options);
-    case 'minimax-image':
-      return generateWithMiniMaxImage(config, options);
-    case 'grok-image':
-      return generateWithGrokImage(config, options);
-    case 'lemonade':
-      return generateWithLemonadeImage(config, options);
-    default:
-      throw new Error(`Unsupported image provider: ${config.providerId}`);
-  }
+  // Get the rate limiter instance (35 RPM default)
+  const rateLimiter = getApiRateLimiter(API_RATE_LIMIT);
+  
+  // Wrap the actual generation call with rate limiting
+  return rateLimiter.execute(async () => {
+    switch (config.providerId) {
+      case 'seedream':
+        return generateWithSeedream(config, options);
+      case 'openai-image':
+        return generateWithOpenAIImage(config, options);
+      case 'qwen-image':
+        return generateWithQwenImage(config, options);
+      case 'nano-banana':
+        return generateWithNanoBanana(config, options);
+      case 'minimax-image':
+        return generateWithMiniMaxImage(config, options);
+      case 'grok-image':
+        return generateWithGrokImage(config, options);
+      case 'lemonade':
+        return generateWithLemonadeImage(config, options);
+      default:
+        throw new Error(`Unsupported image provider: ${config.providerId}`);
+    }
+  });
 }
 
 export function aspectRatioToDimensions(

@@ -18,6 +18,10 @@ import {
 } from './adapters/minimax-video-adapter';
 import { generateWithGrokVideo, testGrokVideoConnectivity } from './adapters/grok-video-adapter';
 import { generateWithHappyHorse, testHappyHorseConnectivity } from './adapters/happyhorse-adapter';
+import { getApiRateLimiter } from '../utils/rate-limiter';
+
+// Rate limit: 35 requests per minute (configurable via environment variable)
+const API_RATE_LIMIT = parseInt(process.env.API_RATE_LIMIT_RPM || '35', 10);
 
 export const VIDEO_PROVIDERS: Record<VideoProviderId, VideoProviderConfig> = {
   seedance: {
@@ -190,20 +194,26 @@ export async function generateVideo(
   config: VideoGenerationConfig,
   options: VideoGenerationOptions,
 ): Promise<VideoGenerationResult> {
-  switch (config.providerId) {
-    case 'seedance':
-      return generateWithSeedance(config, options);
-    case 'kling':
-      return generateWithKling(config, options);
-    case 'veo':
-      return generateWithVeo(config, options);
-    case 'minimax-video':
-      return generateWithMiniMaxVideo(config, options);
-    case 'grok-video':
-      return generateWithGrokVideo(config, options);
-    case 'happyhorse':
-      return generateWithHappyHorse(config, options);
-    default:
-      throw new Error(`Unsupported video provider: ${config.providerId}`);
-  }
+  // Get the rate limiter instance (35 RPM default)
+  const rateLimiter = getApiRateLimiter(API_RATE_LIMIT);
+  
+  // Wrap the actual generation call with rate limiting
+  return rateLimiter.execute(async () => {
+    switch (config.providerId) {
+      case 'seedance':
+        return generateWithSeedance(config, options);
+      case 'kling':
+        return generateWithKling(config, options);
+      case 'veo':
+        return generateWithVeo(config, options);
+      case 'minimax-video':
+        return generateWithMiniMaxVideo(config, options);
+      case 'grok-video':
+        return generateWithGrokVideo(config, options);
+      case 'happyhorse':
+        return generateWithHappyHorse(config, options);
+      default:
+        throw new Error(`Unsupported video provider: ${config.providerId}`);
+    }
+  });
 }
