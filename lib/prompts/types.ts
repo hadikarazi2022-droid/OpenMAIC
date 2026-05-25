@@ -26,7 +26,11 @@ export type PromptId =
   | 'agent-system-wb-assistant'
   | 'agent-system-wb-student'
   | 'director'
-  | 'pbl-design';
+  | 'pbl-design'
+  | 'pedagogical-source-ingestion'
+  | 'pedagogical-blooms-analysis'
+  | 'pedagogical-knowledge-point-extraction'
+  | 'pedagogical-gap-analysis';
 
 /**
  * Snippet identifier
