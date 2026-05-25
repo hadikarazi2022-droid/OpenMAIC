@@ -57,4 +57,4 @@ export const PROMPT_IDS = {
   PEDAGOGICAL_MIND_MAP_GENERATOR: 'pedagogical-mind-map-generator',
   PEDAGOGICAL_CLASSMATE_PERSONAS: 'pedagogical-classmate-personas',
   PEDAGOGICAL_ADAPTIVE_TUTOR_RESPONSE: 'pedagogical-adaptive-tutor-response',
-} as const satisfies Record<string, PromptId>;
+} as const;
