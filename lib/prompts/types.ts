@@ -34,7 +34,10 @@ export type PromptId =
   | 'pedagogical-architect-agent'
   | 'pedagogical-slide-generator'
   | 'pedagogical-script-narration'
-  | 'pedagogical-simulation-designer';
+  | 'pedagogical-simulation-designer'
+  | 'pedagogical-mind-map-generator'
+  | 'pedagogical-classmate-personas'
+  | 'pedagogical-adaptive-tutor-response';
 
 /**
  * Snippet identifier
