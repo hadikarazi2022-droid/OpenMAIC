@@ -47,7 +47,7 @@ import { createLogger } from '@/lib/logger';
 import { resolveModelFromRequest } from '@/lib/server/resolve-model';
 const log = createLogger('Outlines Stream Incremental');
 
-export const maxDuration = 600; // 10 minutes for incremental generation
+export const maxDuration = 200; // 10 minutes for incremental generation
 
 /**
  * Extract the languageDirective from the streamed wrapper JSON.
